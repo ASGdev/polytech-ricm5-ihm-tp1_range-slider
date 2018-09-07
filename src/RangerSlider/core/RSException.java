@@ -5,7 +5,7 @@ public class RSException extends Exception {
 	// ATRIBUTES
 	private static final long serialVersionUID = 1L;
 	
-	// Informations regarding error occured
+	// Informations regarding the error that occured
 	private String message;
 
 	

@@ -12,14 +12,14 @@ public class RangerSlider {
 	public void setlower(int lower) throws RSException {
 		if (lower < minimum ||
 				lower > higher) {
-			throw new RSException("INVALID PARAMETER");
+			throw new RSException("INVALID PARAMETER : LOWER");
 		}
 		this.lower = lower;
 	}
 	public void sethigher(int higher) throws RSException {
 		if (higher < lower ||
 				higher > maximum) {
-			throw new RSException("INVALID PARAMETER");
+			throw new RSException("INVALID PARAMETER : HIGHER");
 		}
 		this.higher = higher;
 	}
@@ -37,6 +37,19 @@ public class RangerSlider {
 	public int getMaximum() {
 		return maximum;
 	}
+	
+	// FUNCTIONS
+	// get the gap between bounds
+	public int getGap() {
+		return (higher - lower);
+	}
+	
+	// drag the bounds
+	public void drag(int incr) throws RSException{		
+		sethigher(this.higher + incr);
+		setlower(this.lower + incr);
+	}
+	
 	
 	// CONSTRUCTOR
 	public RangerSlider(int minimum, int lower, int higher, int maximum) throws RSException {
