@@ -1,6 +1,15 @@
 package RangerSlider.core;
 
-public class RangerSlider {
+import javax.swing.*;
+import RangerSlider.ui.*;
+
+public class RangerSlider extends JSlider{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	
 	// =====================================
 	// ATTRIBUTES
@@ -10,6 +19,7 @@ public class RangerSlider {
 	private int higher;			// the higher bound of the range
 	private final int maximum;	// the maximal tolerated and available lower
 	
+	private RangeSliderUI rsui;	// the associated GUI object
 	// =====================================
 	// METHODES
 	// =====================================
@@ -22,7 +32,7 @@ public class RangerSlider {
 		this.lower = lower;
 	}
 	
-	// set higher bound
+	// Set higher bound
 	public void sethigher(int higher) throws RSException {
 		if (higher < lower ||
 				higher > maximum) {
