@@ -2,13 +2,18 @@ package RangerSlider.core;
 
 public class RangerSlider {
 	
+	// =====================================
 	// ATTRIBUTES
+	// =====================================
 	private final int minimum;	// the minimal tolerated and available lower
 	private int lower;			// the lower bound of the range
 	private int higher;			// the higher bound of the range
 	private final int maximum;	// the maximal tolerated and available lower
 	
-	// SETTER
+	// =====================================
+	// METHODES
+	// =====================================
+	// sEt lower bound
 	public void setlower(int lower) throws RSException {
 		if (lower < minimum ||
 				lower > higher) {
@@ -16,6 +21,8 @@ public class RangerSlider {
 		}
 		this.lower = lower;
 	}
+	
+	// set higher bound
 	public void sethigher(int higher) throws RSException {
 		if (higher < lower ||
 				higher > maximum) {
@@ -24,7 +31,20 @@ public class RangerSlider {
 		this.higher = higher;
 	}
 	
-	// GETTER
+	// Get the gap between bounds
+	public int getGap() {
+		return (higher - lower);
+	}
+	
+	// Drag the bounds
+	public void drag(int incr) throws RSException{		
+		sethigher(this.higher + incr);
+		setlower(this.lower + incr);
+	}
+	
+	// =====================================
+	// GETTER AND SETTER
+	// =====================================
 	public int getMinimum() {
 		return minimum;
 	}
@@ -38,20 +58,9 @@ public class RangerSlider {
 		return maximum;
 	}
 	
-	// FUNCTIONS
-	// get the gap between bounds
-	public int getGap() {
-		return (higher - lower);
-	}
-	
-	// drag the bounds
-	public void drag(int incr) throws RSException{		
-		sethigher(this.higher + incr);
-		setlower(this.lower + incr);
-	}
-	
-	
+	// =====================================
 	// CONSTRUCTOR
+	// =====================================
 	public RangerSlider(int minimum, int lower, int higher, int maximum) throws RSException {
 		// FIXME
 		super();
@@ -64,7 +73,7 @@ public class RangerSlider {
 			throw new RSException("INVALID PARAMETER");
 		}
 		
-		// Set the lowers from parameters
+		// Set the ATTRIBUTES from parameters
 		this.minimum = minimum;
 		this.lower = lower;
 		this.higher = higher;

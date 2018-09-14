@@ -2,14 +2,18 @@ package RangerSlider.core;
 
 public class RSException extends Exception {
 
-	// ATRIBUTES
+	// =====================================
+	// ATTRIBUTES
+	// =====================================
 	private static final long serialVersionUID = 1L;
 	
 	// Informations regarding the error that occured
 	private String message;
 
-	
+	// =====================================
 	// SETTER AND GETTER
+	// =====================================	
+
 	public String getMessage() {
 		return message;
 	}
@@ -18,7 +22,9 @@ public class RSException extends Exception {
 		this.message = message;
 	}
 
+	// =====================================
 	// CONSTRUCTORS
+	// =====================================
 	public RSException() {
 		super();
 	}
