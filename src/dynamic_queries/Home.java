@@ -2,17 +2,17 @@ package dynamic_queries;
 
 public class Home {
 
-	/*
-	 * ======= ATTRIBUTS
-	 */
+	// =============================================
+	// ===== ATTRIBUTS
+	// =============================================
 	private float coord_x;
 	private float coord_y;
 	private float nb_room;
 	private float value;
 
-	/*
-	 * ======= CONSTRUCTOR
-	 */
+	// =============================================
+	// ===== CONSTRUCTOR
+	// =============================================
 	public Home(float x, float y, float rooms, float price) throws HomeException {
 		if (rooms < 0 || price < 0 || x > Application.max_x || x < Application.min_x || y > Application.max_y
 				|| y < Application.min_y)
@@ -24,9 +24,9 @@ public class Home {
 		this.value = price;
 	}
 
-	/*
-	 * ======= METHODES
-	 */
+	// =============================================
+	// ===== SETTER AND GETTER
+	// =============================================
 	public float getCoord_x() {
 		return coord_x;
 	}
@@ -48,5 +48,9 @@ public class Home {
 			throw new HomeException();
 		this.value = value;
 	}
+
+	// =============================================
+	// ===== METHODES
+	// =============================================
 
 }
