@@ -5,17 +5,22 @@ public class Home {
 	// =============================================
 	// ===== ATTRIBUTS
 	// =============================================
-	private float coord_x;
-	private float coord_y;
-	private float nb_room;
-	private float value;
+	private int coord_x;
+	private int coord_y;
+	private int nb_room;
+	private int value;
 
 	// =============================================
 	// ===== CONSTRUCTOR
 	// =============================================
-	public Home(float x, float y, float rooms, float price) throws HomeException {
-		if (rooms < 0 || price < 0 || x > Application.max_x || x < Application.min_x || y > Application.max_y
-				|| y < Application.min_y)
+	public Home(double a, double b, double c, double d) throws HomeException {
+		int x = (int) a;
+		int y = (int) b;
+		int rooms = (int) c;
+		int price = (int) d;
+
+		if (rooms < 0 || price < 0 || x > Application_variables.max_x || x < Application_variables.min_x
+				|| y > Application_variables.max_y || y < Application_variables.min_y)
 			throw new HomeException();
 
 		this.coord_x = x;
@@ -27,23 +32,23 @@ public class Home {
 	// =============================================
 	// ===== SETTER AND GETTER
 	// =============================================
-	public float getCoord_x() {
+	public int getCoord_x() {
 		return coord_x;
 	}
 
-	public float getCoord_y() {
+	public int getCoord_y() {
 		return coord_y;
 	}
 
-	public float getNb_room() {
+	public int getNb_room() {
 		return nb_room;
 	}
 
-	public float getValue() {
+	public int getValue() {
 		return value;
 	}
 
-	public void setValue(float value) throws HomeException {
+	public void setValue(int value) throws HomeException {
 		if (value < 0)
 			throw new HomeException();
 		this.value = value;
