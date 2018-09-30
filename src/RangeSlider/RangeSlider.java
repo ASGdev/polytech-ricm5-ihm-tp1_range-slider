@@ -584,6 +584,10 @@ public class RangeSlider extends Control {
         if (_max <= _min) return;
         newValue = newValue < _min ? _min : newValue;
         newValue = newValue > _max ? _max : newValue;
+        
+        if(newValue > getSupValue()) {
+        	newValue = getSupValue();
+        }
 
         setInfValue(snapValueToTicks(newValue));
     }
@@ -595,6 +599,10 @@ public class RangeSlider extends Control {
         if (_max <= _min) return;
         newValue = newValue < _min ? _min : newValue;
         newValue = newValue > _max ? _max : newValue;
+        
+        if(newValue < getInfValue()) {
+        	newValue = getInfValue();
+        }
 
         setSupValue(snapValueToTicks(newValue));
     }
@@ -638,22 +646,15 @@ public class RangeSlider extends Control {
      * value will always be set to align with a tick mark.
      */
     private void adjustValues() {
-        if ((getInfValue() < getMin() || getInfValue() > getMax()) /* &&  !isReadOnly(value)*/) {
+    	System.out.println("RS : " + getMin() + " " + getMax() + " " + getInfValue() + " " + getSupValue());
+        
+    	if ((getInfValue() < getMin() || getInfValue() > getMax()) /* &&  !isReadOnly(value)*/) {
         	setInfValue(Utils.clamp(getMin(), getInfValue(), getMax()));
         }
         if ((getSupValue() < getMin() || getSupValue() > getMax()) /* &&  !isReadOnly(value)*/) {
         	// clamping to test
-        	setInfValue(Utils.clamp(getMin(), getSupValue(), getMax()));
+        	setSupValue(Utils.clamp(getMin(), getSupValue(), getMax()));
         }
-        
-        if(getSupValue() < getInfValue()) {
-        	setSupValue(getInfValue());
-        }
-        
-        if(getInfValue() > getSupValue()) {
-        	setInfValue(getSupValue());
-        }
-            
     }
 
     /**

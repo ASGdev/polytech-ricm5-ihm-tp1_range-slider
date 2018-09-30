@@ -36,11 +36,13 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 	private StackPane inf_thumb;
 	private StackPane sup_thumb;
 
+	private SelectedThumb currently_selected_thumb;
+
 	private StackPane track;
-	
+
 	// track between two ranges
 	private StackPane rangeTrack;
-	
+
 	private boolean trackClicked = false;
 	// private double visibleAmount = 16;
 
@@ -68,7 +70,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		track = new StackPane();
 		track.getStyleClass().setAll("track");
 		// horizontal = getSkinnable().isVertical();
-		
+
 		rangeTrack = new StackPane();
 		rangeTrack.getStyleClass().setAll("rangeTrack");
 
@@ -83,9 +85,9 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
 				trackClicked = true;
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-					getBehavior().trackPress(me, (me.getX() / trackLength));
+					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
 				} else {
-					getBehavior().trackPress(me, (me.getY() / trackLength));
+					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
 				}
 				trackClicked = false;
 			}
@@ -94,49 +96,51 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		track.setOnMouseDragged(me -> {
 			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-					getBehavior().trackPress(me, (me.getX() / trackLength));
+					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
 				} else {
-					getBehavior().trackPress(me, (me.getY() / trackLength));
+					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
 				}
 			}
 		});
 
 		inf_thumb.setOnMousePressed(me -> {
 			System.out.println("selecting inf_thumb");
-			getBehavior().thumbPressed(me, 0.0f);
+			currently_selected_thumb = SelectedThumb.INF;
+			getBehavior().infThumbPressed(me, 0.0f);
 			dragStart = inf_thumb.localToParent(me.getX(), me.getY());
 			preDragThumbPos = (getSkinnable().getInfValue() - getSkinnable().getMin())
 					/ (getSkinnable().getMax() - getSkinnable().getMin());
 		});
 
 		inf_thumb.setOnMouseReleased(me -> {
-			getBehavior().thumbReleased(me);
+			getBehavior().infThumbReleased(me);
 		});
 
 		inf_thumb.setOnMouseDragged(me -> {
 			Point2D cur = inf_thumb.localToParent(me.getX(), me.getY());
 			double dragPos = (getSkinnable().getOrientation() == Orientation.HORIZONTAL) ? cur.getX() - dragStart.getX()
 					: -(cur.getY() - dragStart.getY());
-			getBehavior().thumbDragged(me, preDragThumbPos + dragPos / trackLength);
+			getBehavior().infThumbDragged(me, preDragThumbPos + dragPos / trackLength);
 		});
-		
+
 		sup_thumb.setOnMousePressed(me -> {
 			System.out.println("selecting sup_thumb");
-			getBehavior().thumbPressed(me, 0.0f);
+			currently_selected_thumb = SelectedThumb.SUP;
+			getBehavior().supThumbPressed(me, 0.0f);
 			dragStart = sup_thumb.localToParent(me.getX(), me.getY());
 			preDragThumbPos = (getSkinnable().getSupValue() - getSkinnable().getMin())
 					/ (getSkinnable().getMax() - getSkinnable().getMin());
 		});
 
 		sup_thumb.setOnMouseReleased(me -> {
-			getBehavior().thumbReleased(me);
+			getBehavior().supThumbReleased(me);
 		});
 
 		sup_thumb.setOnMouseDragged(me -> {
 			Point2D cur = sup_thumb.localToParent(me.getX(), me.getY());
 			double dragPos = (getSkinnable().getOrientation() == Orientation.HORIZONTAL) ? cur.getX() - dragStart.getX()
 					: -(cur.getY() - dragStart.getY());
-			getBehavior().thumbDragged(me, preDragThumbPos + dragPos / trackLength);
+			getBehavior().supThumbDragged(me, preDragThumbPos + dragPos / trackLength);
 		});
 	}
 
@@ -203,10 +207,19 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			getSkinnable().requestLayout();
 		} else if ("INF_VALUE".equals(p)) {
 			// only animate thumb if the track was clicked - not if the thumb is dragged
-			positionThumb(trackClicked);
+			if (currently_selected_thumb == SelectedThumb.INF) {
+				positionInfThumb(trackClicked);
+			} else {
+				positionSupThumb(trackClicked);
+			}
 		} else if ("SUP_VALUE".equals(p)) {
 			// only animate thumb if the track was clicked - not if the thumb is dragged
-			positionThumb(trackClicked);
+			// only animate thumb if the track was clicked - not if the thumb is dragged
+			if (currently_selected_thumb == SelectedThumb.INF) {
+				positionInfThumb(trackClicked);
+			} else {
+				positionSupThumb(trackClicked);
+			}
 		} else if ("MIN".equals(p)) {
 			if (showTickMarks && tickLine != null) {
 				tickLine.setLowerBound(slider.getMin());
@@ -253,7 +266,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		positionInfThumb(animate);
 		positionSupThumb(animate);
 	}
-	
+
 	void positionInfThumb(final boolean animate) {
 		System.out.println("Skin - Positionning inf thumb...");
 		RangeSlider s = getSkinnable();
@@ -293,7 +306,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			inf_thumb.setLayoutY(endY);
 		}
 	}
-	
+
 	/**
 	 * Called when ever either min, max or value changes, so thumb's layoutX, Y is
 	 * recomputed.

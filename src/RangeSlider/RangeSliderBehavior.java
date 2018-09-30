@@ -30,219 +30,307 @@ import static javafx.scene.input.KeyCode.UP;
 import static javafx.scene.input.KeyEvent.KEY_RELEASED;
 
 public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
-    /**************************************************************************
-     *                          Setup KeyBindings                             *
-     *                                                                        *
-     * We manually specify the focus traversal keys because Slider has        *
-     * different usage for up/down arrow keys.                                *
-     *************************************************************************/
-    protected static final List<KeyBinding> SLIDER_BINDINGS = new ArrayList<KeyBinding>();
-    static {
-        SLIDER_BINDINGS.add(new KeyBinding(F4, "TraverseDebug").alt().ctrl().shift());
+	/**************************************************************************
+	 * Setup KeyBindings * * We manually specify the focus traversal keys because
+	 * Slider has * different usage for up/down arrow keys. *
+	 *************************************************************************/
+	protected static final List<KeyBinding> SLIDER_BINDINGS = new ArrayList<KeyBinding>();
+	static {
+		SLIDER_BINDINGS.add(new KeyBinding(F4, "TraverseDebug").alt().ctrl().shift());
 
-        // controls the inferior boundary
-        SLIDER_BINDINGS.add(new SliderKeyBinding(LEFT, "DecrementInfValue"));
-        SLIDER_BINDINGS.add(new SliderKeyBinding(KP_LEFT, "DecrementInfValue"));
-        SLIDER_BINDINGS.add(new SliderKeyBinding(RIGHT, "IncrementInfValue"));
-        SLIDER_BINDINGS.add(new SliderKeyBinding(KP_RIGHT, "IncrementInfValue"));
-        
-        // controls the upper boundary
-        SLIDER_BINDINGS.add(new SliderKeyBinding(UP, "IncrementSupValue").vertical());
-        SLIDER_BINDINGS.add(new SliderKeyBinding(KP_UP, "IncrementSupValue").vertical());
-        SLIDER_BINDINGS.add(new SliderKeyBinding(DOWN, "DecrementSupValue").vertical());
-        SLIDER_BINDINGS.add(new SliderKeyBinding(KP_DOWN, "DecrementSupValue").vertical());
+		// controls the inferior boundary
+		SLIDER_BINDINGS.add(new SliderKeyBinding(LEFT, "DecrementInfValue"));
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_LEFT, "DecrementInfValue"));
+		SLIDER_BINDINGS.add(new SliderKeyBinding(RIGHT, "IncrementInfValue"));
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_RIGHT, "IncrementInfValue"));
 
-        SLIDER_BINDINGS.add(new KeyBinding(HOME, KEY_RELEASED, "Home"));
-        SLIDER_BINDINGS.add(new KeyBinding(END, KEY_RELEASED, "End"));
-    }
+		// controls the upper boundary
+		SLIDER_BINDINGS.add(new SliderKeyBinding(UP, "IncrementSupValue").vertical());
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_UP, "IncrementSupValue").vertical());
+		SLIDER_BINDINGS.add(new SliderKeyBinding(DOWN, "DecrementSupValue").vertical());
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_DOWN, "DecrementSupValue").vertical());
 
-    protected /*final*/ String matchActionForEvent(KeyEvent e) {
-        String action = super.matchActionForEvent(e);
-        if (action != null) {
-            if (e.getCode() == LEFT || e.getCode() == KP_LEFT) {
-                if (getControl().getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT) {
-                    action = getControl().getOrientation() == Orientation.HORIZONTAL ? "IncrementValue" : "DecrementValue";
-                }
-            } else if (e.getCode() == RIGHT || e.getCode() == KP_RIGHT) {
-                if (getControl().getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT) {
-                    action = getControl().getOrientation() == Orientation.HORIZONTAL ? "DecrementValue" : "IncrementValue";
-                }
-            }
-        }
-        return action;
-    }
+		SLIDER_BINDINGS.add(new KeyBinding(HOME, KEY_RELEASED, "Home"));
+		SLIDER_BINDINGS.add(new KeyBinding(END, KEY_RELEASED, "End"));
+	}
 
-    @Override
-    protected void callAction(String name) {
-        if ("Home".equals(name)) home();
-        else if ("End".equals(name)) end(); // TODO : add support for both thumbs
-        else if ("IncrementInfValue".equals(name)) incrementInfValue();
-        else if ("IncrementSupValue".equals(name)) incrementSupValue();
-        else if ("DecrementInfValue".equals(name)) decrementInfValue();
-        else if ("DecrementSupValue".equals(name)) decrementSupValue();
-        else super.callAction(name);
-    }
+	protected /* final */ String matchActionForEvent(KeyEvent e) {
+		String action = super.matchActionForEvent(e);
+		if (action != null) {
+			if (e.getCode() == LEFT || e.getCode() == KP_LEFT) {
+				if (getControl().getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT) {
+					action = getControl().getOrientation() == Orientation.HORIZONTAL ? "IncrementValue"
+							: "DecrementValue";
+				}
+			} else if (e.getCode() == RIGHT || e.getCode() == KP_RIGHT) {
+				if (getControl().getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT) {
+					action = getControl().getOrientation() == Orientation.HORIZONTAL ? "DecrementValue"
+							: "IncrementValue";
+				}
+			}
+		}
+		return action;
+	}
 
-    private TwoLevelFocusBehavior tlFocus;
+	@Override
+	protected void callAction(String name) {
+		if ("Home".equals(name))
+			home();
+		else if ("End".equals(name))
+			end(); // TODO : add support for both thumbs
+		else if ("IncrementInfValue".equals(name))
+			incrementInfValue();
+		else if ("IncrementSupValue".equals(name))
+			incrementSupValue();
+		else if ("DecrementInfValue".equals(name))
+			decrementInfValue();
+		else if ("DecrementSupValue".equals(name))
+			decrementSupValue();
+		else
+			super.callAction(name);
+	}
 
-    public RangeSliderBehavior(RangeSlider rangeslider) {
-        super(rangeslider, SLIDER_BINDINGS);
-        // Only add this if we're on an embedded platform that supports 5-button navigation
-        if (com.sun.javafx.scene.control.skin.Utils.isTwoLevelFocus()) {
-            tlFocus = new TwoLevelFocusBehavior(rangeslider); // needs to be last.
-        }
-    }
+	private TwoLevelFocusBehavior tlFocus;
 
-    @Override public void dispose() {
-        if (tlFocus != null) tlFocus.dispose();
-        super.dispose();
-    }
+	public RangeSliderBehavior(RangeSlider rangeslider) {
+		super(rangeslider, SLIDER_BINDINGS);
+		// Only add this if we're on an embedded platform that supports 5-button
+		// navigation
+		if (com.sun.javafx.scene.control.skin.Utils.isTwoLevelFocus()) {
+			tlFocus = new TwoLevelFocusBehavior(rangeslider); // needs to be last.
+		}
+	}
 
-    /**************************************************************************
-     *                         State and Functions                            *
-     *************************************************************************/
+	@Override
+	public void dispose() {
+		if (tlFocus != null)
+			tlFocus.dispose();
+		super.dispose();
+	}
 
-    /**
-     * Invoked by the Slider {@link Skin} implementation whenever a mouse press
-     * occurs on the "track" of the slider. This will cause the thumb to be
-     * moved by some amount.
-     *
-     * @param position The mouse position on track with 0.0 being beginning of
-     *        track and 1.0 being the end
-     */
-    public void trackPress(MouseEvent e, double position) {
-        // determine the percentage of the way between min and max
-        // represented by this mouse event
-        final RangeSlider rangeslider = getControl();
-        // If not already focused, request focus
-        if (!rangeslider.isFocused()) rangeslider.requestFocus();
-        if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
-        	rangeslider.adjustInfValue(position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-        	rangeslider.adjustSupValue(position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-        } else {
-        	rangeslider.adjustInfValue((1-position) * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-        	rangeslider.adjustSupValue(position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-        }
-    }
+	/**************************************************************************
+	 * State and Functions *
+	 *************************************************************************/
 
-     /**
-     * @param position The mouse position on track with 0.0 being beginning of
-      *       track and 1.0 being the end
-     */
-    public void thumbPressed(MouseEvent e, double position) {
-        // If not already focused, request focus
-        final RangeSlider rangeslider = getControl();
-        if (!rangeslider.isFocused())  rangeslider.requestFocus();
-        //TODO rangeslider.setValueChanging(true);
-    }
+	/**
+	 * Invoked by the Slider {@link Skin} implementation whenever a mouse press
+	 * occurs on the "track" of the slider.
+	 * 
+	 * This will cause the currently selected thumb to be moved by some amount.
+	 *
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void trackPress(MouseEvent e, double position, SelectedThumb target_thumb) {
+		// determine the percentage of the way between min and max
+		// represented by this mouse event
+		final RangeSlider rangeslider = getControl();
+		// If not already focused, request focus
+		if (!rangeslider.isFocused())
+			rangeslider.requestFocus();
+		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
+			if (target_thumb == SelectedThumb.INF) {
+				rangeslider.adjustInfValue(
+						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+			} else {
+				rangeslider.adjustSupValue(
+						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+			}
+		} else {
+			if (target_thumb == SelectedThumb.INF) {
+				rangeslider.adjustInfValue(
+						(1 - position) * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+			} else {
+				rangeslider.adjustSupValue(
+						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+			}
+		}
+	}
 
-    /**
-     * @param position The mouse position on track with 0.0 being beginning of
-     *        track and 1.0 being the end
-     */
-    public void thumbDragged(MouseEvent e, double position) {
-        final RangeSlider rangeslider = getControl();
-        // TODO rangeslider.setValue(Utils.clamp(rangeslider.getMin(), (position * (rangeslider.getMax() - rangeslider.getMin())) + rangeslider.getMin(), rangeslider.getMax()));
-    }
+	/**
+	 * Handles inf thumb event
+	 * 
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void infThumbPressed(MouseEvent e, double position) {
+		// If not already focused, request focus
+		final RangeSlider rangeslider = getControl();
+		if (!rangeslider.isFocused())
+			rangeslider.requestFocus();
+		rangeslider.setInfValueChanging(true);
+	}
 
-    /**
-     * When thumb is released valueChanging should be set to false.
-     */
-    public void thumbReleased(MouseEvent e) {
-        final RangeSlider rangeslider = getControl();
-        // TODO rangeslider.setValueChanging(false);
-        // RT-15207 When snapToTicks is true, slider value calculated in drag
-        // is then snapped to the nearest tick on mouse release.
-        // TODO rangeslider.adjustValue(rangeslider.getValue());
-    }
+	/**
+	 * Handles sup thumb event
+	 * 
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void supThumbPressed(MouseEvent e, double position) {
+		// If not already focused, request focus
+		final RangeSlider rangeslider = getControl();
+		if (!rangeslider.isFocused())
+			rangeslider.requestFocus();
+		rangeslider.setSupValueChanging(true);
+	}
 
-    void home() {
-        final RangeSlider rangeslider = getControl();
-        // TODO rangeslider.adjustValue(rangeslider.getMin());
-    }
+	/**
+	 * Handles inf thumb event
+	 * 
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void infThumbDragged(MouseEvent e, double position) {
+		final RangeSlider rangeslider = getControl();
 
-    void decrementInfValue() {
-        final RangeSlider rangeslider = getControl();
-        // RT-8634 If snapToTicks is true and block increment is less than
-        // tick spacing, tick spacing is used as the decrement value.
-        if (rangeslider.isSnapToTicks()) {
-        	rangeslider.adjustInfValue(rangeslider.getInfValue() - computeIncrement());
-        } else {
-        	rangeslider.decrementInf();
-        }
+		double newvalue = Utils.clamp(rangeslider.getMin(),
+				(position * (rangeslider.getMax() - rangeslider.getMin())) + rangeslider.getMin(),
+				rangeslider.getMax());
 
-    }
+		if (newvalue > rangeslider.getSupValue()) {
+			rangeslider.setSupValue(newvalue);
+		}
 
-    void decrementSupValue() {
-        final RangeSlider rangeslider = getControl();
-        // RT-8634 If snapToTicks is true and block increment is less than
-        // tick spacing, tick spacing is used as the decrement value.
-        if (rangeslider.isSnapToTicks()) {
-        	rangeslider.adjustSupValue(rangeslider.getSupValue() - computeIncrement());
-        } else {
-        	rangeslider.decrementSup();
-        }
+		rangeslider.setInfValue(newvalue);
+	}
 
-    }
-    
-    void end() {
-        final RangeSlider rangeslider = getControl();
-        // TODO
-        //rangeslider.adjustValue(rangeslider.getMax());
-    }
+	/**
+	 * Handles sup thumb event
+	 * 
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void supThumbDragged(MouseEvent e, double position) {
+		final RangeSlider rangeslider = getControl();
+		
+		double newvalue = Utils.clamp(rangeslider.getMin(),
+				(position * (rangeslider.getMax() - rangeslider.getMin())) + rangeslider.getMin(),
+				rangeslider.getMax());
 
-    void incrementInfValue() {
-        final RangeSlider rangeslider = getControl();
-        // RT-8634 If snapToTicks is true and block increment is less than
-        // tick spacing, tick spacing is used as the increment value.
-        if (rangeslider.isSnapToTicks()) {
-        	rangeslider.adjustInfValue(rangeslider.getInfValue()+ computeIncrement());
-        } else {
-        	rangeslider.incrementInf();
-        }
-    }
-    
-    void incrementSupValue() {
-        final RangeSlider rangeslider = getControl();
-        // RT-8634 If snapToTicks is true and block increment is less than
-        // tick spacing, tick spacing is used as the increment value.
-        if (rangeslider.isSnapToTicks()) {
-        	rangeslider.adjustSupValue(rangeslider.getSupValue()+ computeIncrement());
-        } else {
-        	rangeslider.incrementSup();
-        }
-    }
+		if (newvalue < rangeslider.getInfValue()) {
+			rangeslider.setInfValue(newvalue);
+		}
 
-    // Used only if snapToTicks is true.
-    double computeIncrement() {
-        final RangeSlider rangeslider = getControl();
-        double tickSpacing = 0;
-        if (rangeslider.getMinorTickCount() != 0) {
-            tickSpacing = rangeslider.getMajorTickUnit() / (Math.max(rangeslider.getMinorTickCount(),0)+1);
-        } else {
-            tickSpacing = rangeslider.getMajorTickUnit();
-        }
+		rangeslider.setSupValue(newvalue);
+	}
 
-        if (rangeslider.getBlockIncrement() > 0 && rangeslider.getBlockIncrement() < tickSpacing) {
-                return tickSpacing;
-        }
+	/**
+	 * Handles inf thumb event When thumb is released valueChanging should be set to
+	 * false.
+	 */
+	public void infThumbReleased(MouseEvent e) {
+		final RangeSlider rangeslider = getControl();
+		rangeslider.setInfValueChanging(false);
+		// RT-15207 When snapToTicks is true, slider value calculated in drag
+		// is then snapped to the nearest tick on mouse release.
+		rangeslider.adjustInfValue(rangeslider.getInfValue());
+	}
 
-        return rangeslider.getBlockIncrement();
-    }
+	/**
+	 * Handles sup thumb event When thumb is released valueChanging should be set to
+	 * false.
+	 */
+	public void supThumbReleased(MouseEvent e) {
+		final RangeSlider rangeslider = getControl();
+		rangeslider.setSupValueChanging(false);
+		// RT-15207 When snapToTicks is true, slider value calculated in drag
+		// is then snapped to the nearest tick on mouse release.
+		rangeslider.adjustSupValue(rangeslider.getSupValue());
+	}
 
-    public static class SliderKeyBinding extends OrientedKeyBinding {
-        public SliderKeyBinding(KeyCode code, String action) {
-            super(code, action);
-        }
+	void home() {
+		final RangeSlider rangeslider = getControl();
+		rangeslider.adjustInfValue(rangeslider.getMin());
+		rangeslider.adjustSupValue(rangeslider.getMin());
+	}
 
-        public SliderKeyBinding(KeyCode code, EventType<KeyEvent> type, String action) {
-            super(code, type, action);
-        }
+	void decrementInfValue() {
+		final RangeSlider rangeslider = getControl();
+		// RT-8634 If snapToTicks is true and block increment is less than
+		// tick spacing, tick spacing is used as the decrement value.
+		if (rangeslider.isSnapToTicks()) {
+			rangeslider.adjustInfValue(rangeslider.getInfValue() - computeIncrement());
+		} else {
+			rangeslider.decrementInf();
+		}
 
-        public @Override boolean getVertical(Control control) {
-            return ((RangeSlider)control).getOrientation() == Orientation.VERTICAL;
-        }
-    }
+	}
+
+	void decrementSupValue() {
+		final RangeSlider rangeslider = getControl();
+		// RT-8634 If snapToTicks is true and block increment is less than
+		// tick spacing, tick spacing is used as the decrement value.
+		if (rangeslider.isSnapToTicks()) {
+			rangeslider.adjustSupValue(rangeslider.getSupValue() - computeIncrement());
+		} else {
+			rangeslider.decrementSup();
+		}
+
+	}
+
+	void end() {
+		final RangeSlider rangeslider = getControl();
+		rangeslider.adjustInfValue(rangeslider.getMax());
+		rangeslider.adjustSupValue(rangeslider.getMin());
+	}
+
+	void incrementInfValue() {
+		final RangeSlider rangeslider = getControl();
+		// RT-8634 If snapToTicks is true and block increment is less than
+		// tick spacing, tick spacing is used as the increment value.
+		if (rangeslider.isSnapToTicks()) {
+			rangeslider.adjustInfValue(rangeslider.getInfValue() + computeIncrement());
+		} else {
+			rangeslider.incrementInf();
+		}
+	}
+
+	void incrementSupValue() {
+		final RangeSlider rangeslider = getControl();
+		// RT-8634 If snapToTicks is true and block increment is less than
+		// tick spacing, tick spacing is used as the increment value.
+		if (rangeslider.isSnapToTicks()) {
+			rangeslider.adjustSupValue(rangeslider.getSupValue() + computeIncrement());
+		} else {
+			rangeslider.incrementSup();
+		}
+	}
+
+	// Used only if snapToTicks is true.
+	double computeIncrement() {
+		final RangeSlider rangeslider = getControl();
+		double tickSpacing = 0;
+		if (rangeslider.getMinorTickCount() != 0) {
+			tickSpacing = rangeslider.getMajorTickUnit() / (Math.max(rangeslider.getMinorTickCount(), 0) + 1);
+		} else {
+			tickSpacing = rangeslider.getMajorTickUnit();
+		}
+
+		if (rangeslider.getBlockIncrement() > 0 && rangeslider.getBlockIncrement() < tickSpacing) {
+			return tickSpacing;
+		}
+
+		return rangeslider.getBlockIncrement();
+	}
+
+	public static class SliderKeyBinding extends OrientedKeyBinding {
+		public SliderKeyBinding(KeyCode code, String action) {
+			super(code, action);
+		}
+
+		public SliderKeyBinding(KeyCode code, EventType<KeyEvent> type, String action) {
+			super(code, type, action);
+		}
+
+		public @Override boolean getVertical(Control control) {
+			return ((RangeSlider) control).getOrientation() == Orientation.VERTICAL;
+		}
+	}
 
 }
-
