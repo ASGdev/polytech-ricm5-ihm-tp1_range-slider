@@ -72,13 +72,14 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		// horizontal = getSkinnable().isVertical();
 
 		rangeTrack = new StackPane();
-		rangeTrack.getStyleClass().setAll("rangeTrack");
+		rangeTrack.getStyleClass().setAll("track");
+		rangeTrack.setStyle("-fx-background-color: slateblue;");
 
 		sup_thumb = new StackPane();
 		sup_thumb.getStyleClass().setAll("thumb");
 
 		getChildren().clear();
-		getChildren().addAll(track, sup_thumb, inf_thumb);
+		getChildren().addAll(track, rangeTrack, sup_thumb, inf_thumb);
 
 		setShowTickMarks(getSkinnable().isShowTickMarks(), getSkinnable().isShowTickLabels());
 		track.setOnMousePressed(me -> {
@@ -180,7 +181,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 					tickLine.setTickLabelFormatter(stringConverterWrapper);
 				}
 				getChildren().clear();
-				getChildren().addAll(tickLine, track, inf_thumb, sup_thumb);
+				getChildren().addAll(tickLine, track, rangeTrack, inf_thumb, sup_thumb);
 			} else {
 				tickLine.setTickLabelsVisible(labelsVisible);
 				tickLine.setTickMarkVisible(ticksVisible);
@@ -188,7 +189,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			}
 		} else {
 			getChildren().clear();
-			getChildren().addAll(track, inf_thumb, sup_thumb);
+			getChildren().addAll(track, rangeTrack, inf_thumb, sup_thumb);
 			// tickLine = null;
 		}
 
@@ -366,6 +367,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 						: 0;
 
 		if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
+			// track layout
 			double tickLineHeight = (showTickMarks) ? tickLine.prefHeight(-1) : 0;
 			double trackHeight = snapSize(track.prefHeight(-1));
 			double trackAreaHeight = Math.max(trackHeight, thumbHeight);
@@ -393,6 +395,12 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 				}
 				tickLine = null;
 			}
+			
+			// rangetrack layout
+			// the +5 (arbitrary) is because of the rounded thumbs on the default styling
+			rangeTrack.resizeRelocate((int) (inf_thumb.getLayoutX() + 5), trackTop,
+					(int) (sup_thumb.getLayoutX() - inf_thumb.getLayoutX()), (int) trackHeight);
+			
 		} else {
 			double tickLineWidth = (showTickMarks) ? tickLine.prefWidth(-1) : 0;
 			double trackWidth = snapSize(track.prefWidth(-1));
