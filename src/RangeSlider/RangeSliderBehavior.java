@@ -123,6 +123,7 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 	 *            1.0 being the end
 	 */
 	public void trackPress(MouseEvent e, double position, SelectedThumb target_thumb) {
+		System.out.println("track pressed");
 		// determine the percentage of the way between min and max
 		// represented by this mouse event
 		final RangeSlider rangeslider = getControl();
@@ -146,6 +147,37 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
 			}
 		}
+	}
+
+	/**
+	 * Invoked by the Slider {@link Skin} implementation whenever a mouse press
+	 * occurs on the "range track" of the slider.
+	 * 
+	 * This will cause both thumbs to be moved by some amount.
+	 *
+	 * @param position
+	 *            The mouse position on track with 0.0 being beginning of track and
+	 *            1.0 being the end
+	 */
+	public void rangeTrackPress(MouseEvent e, double position, double originalPosition) {
+		System.out.println("rangeTrack clicked");
+		// determine the percentage of the way between min and max
+		// represented by this mouse event
+		final RangeSlider rangeslider = getControl();
+		// If not already focused, request focus
+		if (!rangeslider.isFocused())
+			rangeslider.requestFocus();
+		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
+		
+		} else {
+			// not supported yet
+		
+		}
+	}
+
+	
+	public void setRangeTrackerOriginPosition(double position) {
+		
 	}
 
 	/**
@@ -208,7 +240,7 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 	 */
 	public void supThumbDragged(MouseEvent e, double position) {
 		final RangeSlider rangeslider = getControl();
-		
+
 		double newvalue = Utils.clamp(rangeslider.getMin(),
 				(position * (rangeslider.getMax() - rangeslider.getMin())) + rangeslider.getMin(),
 				rangeslider.getMax());

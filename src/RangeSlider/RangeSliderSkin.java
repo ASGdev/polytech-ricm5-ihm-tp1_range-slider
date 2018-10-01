@@ -39,9 +39,12 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 	private SelectedThumb currently_selected_thumb;
 
 	private StackPane track;
+	
+	private double rangeTrackerOriginPosition;
 
 	// track between two ranges
 	private StackPane rangeTrack;
+	private boolean rangeTrackClicked = false;
 
 	private boolean trackClicked = false;
 	// private double visibleAmount = 16;
@@ -100,6 +103,28 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
 				} else {
 					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
+				}
+			}
+		});
+		
+		rangeTrack.setOnMousePressed(me -> {
+			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
+				rangeTrackClicked = true;
+				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
+					// sets original position
+					rangeTrackerOriginPosition = (me.getX() / trackLength);
+					System.out.println("setting origin pos : " + rangeTrackerOriginPosition);
+				}
+				rangeTrackClicked = false;
+			}
+		});
+
+		rangeTrack.setOnMouseDragged(me -> {
+			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
+				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
+					getBehavior().rangeTrackPress(me, (me.getX() / trackLength), rangeTrackerOriginPosition);
+				} else {
+					getBehavior().rangeTrackPress(me, (me.getY() / trackLength), rangeTrackerOriginPosition);
 				}
 			}
 		});
@@ -269,7 +294,6 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 	}
 
 	void positionInfThumb(final boolean animate) {
-		System.out.println("Skin - Positionning inf thumb...");
 		RangeSlider s = getSkinnable();
 		if (s.getInfValue() > s.getMax())
 			return;// this can happen if we are bound to something
@@ -313,7 +337,6 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 	 * recomputed.
 	 */
 	void positionSupThumb(final boolean animate) {
-		System.out.println("Skin - Positionning sup thumb...");
 		RangeSlider s = getSkinnable();
 		if (s.getSupValue() > s.getMax())
 			return;// this can happen if we are bound to something
