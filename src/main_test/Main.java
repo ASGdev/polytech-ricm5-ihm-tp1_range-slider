@@ -37,8 +37,21 @@ public class Main extends Application {
         simpleslider.setMin(0);
         simpleslider.setMax(10);
         simpleslider.setValue(5.);
+        simpleslider.setShowTickLabels(true);
+        simpleslider.setShowTickMarks(true);
+        simpleslider.setMajorTickUnit(5);
+        simpleslider.setMinorTickCount(5);
+        simpleslider.setBlockIncrement(1);
+        simpleslider.setSnapToTicks(true);
 
         RangeSlider rangeslider = new RangeSlider(0, 10, 5, 7, 0);
+        rangeslider.setShowTickLabels(true);
+        rangeslider.setShowTickLabels(true);
+        rangeslider.setShowTickMarks(true);
+        rangeslider.setMajorTickUnit(5);
+        rangeslider.setMinorTickCount(5);
+        rangeslider.setBlockIncrement(1);
+        rangeslider.setSnapToTicks(true);
 
         VBox root = new VBox();
         root.getChildren().add(btn);

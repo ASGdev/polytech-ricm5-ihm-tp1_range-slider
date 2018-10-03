@@ -160,7 +160,7 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 	 *            1.0 being the end
 	 */
 	public void rangeTrackPress(MouseEvent e, double position, double originalPosition) {
-		System.out.println("rangeTrack clicked");
+		//System.out.println("rangeTrack clicked");
 		// determine the percentage of the way between min and max
 		// represented by this mouse event
 		final RangeSlider rangeslider = getControl();
@@ -168,15 +168,17 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 		if (!rangeslider.isFocused())
 			rangeslider.requestFocus();
 		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
-		
+			// does not work
+			/*double dragDelta = (position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin()) - (originalPosition * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+			System.out.println("delta " + dragDelta);
+			
+			rangeslider.adjustInfValue(rangeslider.getMin() + dragDelta);
+			rangeslider.adjustSupValue(rangeslider.getMax() + dragDelta);*/
+			
 		} else {
 			// not supported yet
 		
 		}
-	}
-
-	
-	public void setRangeTrackerOriginPosition(double position) {
 		
 	}
 

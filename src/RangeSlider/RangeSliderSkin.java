@@ -76,6 +76,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 
 		rangeTrack = new StackPane();
 		rangeTrack.getStyleClass().setAll("track");
+		// sets default color for range (inner) track
 		rangeTrack.setStyle("-fx-background-color: slateblue;");
 
 		sup_thumb = new StackPane();
@@ -112,8 +113,12 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 				rangeTrackClicked = true;
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
 					// sets original position
-					rangeTrackerOriginPosition = (me.getX() / trackLength);
-					System.out.println("setting origin pos : " + rangeTrackerOriginPosition);
+					//rangeTrackerOriginPosition = (me.getX() / trackLength);
+					//System.out.println("setting origin pos : " + rangeTrackerOriginPosition);
+					
+					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
+				} else {
+					//getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
 				}
 				rangeTrackClicked = false;
 			}
@@ -122,8 +127,10 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		rangeTrack.setOnMouseDragged(me -> {
 			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
+					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
 					getBehavior().rangeTrackPress(me, (me.getX() / trackLength), rangeTrackerOriginPosition);
 				} else {
+					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
 					getBehavior().rangeTrackPress(me, (me.getY() / trackLength), rangeTrackerOriginPosition);
 				}
 			}
