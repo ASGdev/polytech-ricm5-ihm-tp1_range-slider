@@ -186,10 +186,7 @@ public class UserInterface extends Application {
 	}
 
 	private void reset() {
-		min_rooms = Application_variables.min_rooms+2;
-		max_rooms = Application_variables.max_rooms-2;
-		min_price = Application_variables.min_price+10000;
-		max_price = Application_variables.max_price-10000;
+		min_rooms +=2;
 		drawHomes(gc);
 	}
 
@@ -222,6 +219,7 @@ public class UserInterface extends Application {
 		int rooms;
 		int value;
 		Paint p;
+		gc.clearRect(0, 0, canvas_w, canvas_h);
 		gc.setLineWidth(2);
 
 		for (Home home : tab_homes) {
