@@ -78,6 +78,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		rangeTrack.getStyleClass().setAll("track");
 		// sets default color for range (inner) track
 		rangeTrack.setStyle("-fx-background-color: slateblue;");
+		rangeTrack.setMouseTransparent(true);
 
 		sup_thumb = new StackPane();
 		sup_thumb.getStyleClass().setAll("thumb");
@@ -90,9 +91,9 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
 				trackClicked = true;
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
+					getBehavior().trackPress(me, (me.getX() / trackLength));
 				} else {
-					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
+					getBehavior().trackPress(me, (me.getY() / trackLength));
 				}
 				trackClicked = false;
 			}
@@ -101,9 +102,9 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		track.setOnMouseDragged(me -> {
 			if (!inf_thumb.isPressed() || !sup_thumb.isPressed()) {
 				if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-					getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
+					getBehavior().trackPress(me, (me.getX() / trackLength));
 				} else {
-					getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
+					getBehavior().trackPress(me, (me.getY() / trackLength));
 				}
 			}
 		});
@@ -115,11 +116,7 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 					// sets original position
 					rangeTrackerOriginPosition = (me.getX() / trackLength);
 					System.out.println("setting origin pos : " + rangeTrackerOriginPosition);
-					
-					//getBehavior().trackPress(me, (me.getX() / trackLength), currently_selected_thumb);
-					//getBehavior().rangeTrackPress(me, (me.getX() / trackLength), rangeTrackerOriginPosition);
-				} else {
-					//getBehavior().trackPress(me, (me.getY() / trackLength), currently_selected_thumb);
+
 				}
 				rangeTrackClicked = false;
 			}

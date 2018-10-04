@@ -122,7 +122,7 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 	 *            The mouse position on track with 0.0 being beginning of track and
 	 *            1.0 being the end
 	 */
-	public void trackPress(MouseEvent e, double position, SelectedThumb target_thumb) {
+	public void trackPress(MouseEvent e, double position) {
 		System.out.println("track pressed");
 		// determine the percentage of the way between min and max
 		// represented by this mouse event
@@ -131,33 +131,18 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 		if (!rangeslider.isFocused())
 			rangeslider.requestFocus();
 		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
-			if (target_thumb == SelectedThumb.INF) {
-				double newvalue = position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin();
-							
-				if(newvalue > rangeslider.getSupValue()) {
-					rangeslider.adjustSupValue(newvalue);	
-				} else {
-					rangeslider.adjustInfValue(newvalue);
-				}
-			
+
+			double newvalue = position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin();
+
+			if (Utils.nearest(rangeslider.getInfValue(), newvalue, rangeslider.getSupValue()) == rangeslider
+					.getInfValue()) {
+				rangeslider.adjustInfValue(newvalue);
 			} else {
-				double newvalue = position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin();
-				
-				if(newvalue < rangeslider.getSupValue()) {
-					rangeslider.adjustInfValue(newvalue);	
-				} else {
-					rangeslider.adjustSupValue(newvalue);
-				}
-				
+				rangeslider.adjustSupValue(newvalue);
 			}
+
 		} else {
-			if (target_thumb == SelectedThumb.INF) {
-				rangeslider.adjustInfValue(
-						(1 - position) * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-			} else {
-				rangeslider.adjustSupValue(
-						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
-			}
+			// not implemented yet
 		}
 	}
 
@@ -182,17 +167,18 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
 			double dragDelta = position - originalPosition;
 			System.out.println("delta " + dragDelta);
-			
-			if((rangeslider.getInfValue() + dragDelta >= rangeslider.getMin()) && (rangeslider.getSupValue() + dragDelta <= rangeslider.getMax())) {
+
+			if ((rangeslider.getInfValue() + dragDelta >= rangeslider.getMin())
+					&& (rangeslider.getSupValue() + dragDelta <= rangeslider.getMax())) {
 				rangeslider.adjustInfValue(rangeslider.getInfValue() + dragDelta);
 				rangeslider.adjustSupValue(rangeslider.getSupValue() + dragDelta);
-			} 
+			}
 
 		} else {
 			// not supported yet
-		
+
 		}
-		
+
 	}
 
 	/**
