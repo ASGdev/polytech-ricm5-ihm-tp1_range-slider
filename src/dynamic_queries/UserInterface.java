@@ -1,5 +1,6 @@
 package dynamic_queries;
 
+import RangeSlider.RangeSlider;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parameters.Application_variables;
 import javafx.scene.*;
 import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
@@ -28,6 +30,7 @@ public class UserInterface extends Application {
 	// Homes
 	private Home tab_homes[];
 
+	// The value we filter on
 	private int min_rooms;
 	private int max_rooms;
 	private int min_price;
@@ -62,6 +65,17 @@ public class UserInterface extends Application {
 	private Button quit;
 	private DropShadow shadow;
 
+	// The RangeSlider
+	private RangeSlider price_slider;
+	private RangeSlider room_slider;
+
+	// Container
+	private BorderPane price_bp;
+	private BorderPane room_bp;
+
+	// Title
+	private Button price_b;
+	private Button room_b;
 	// =============================================
 	// ===== METHODES
 	// =============================================
@@ -74,7 +88,7 @@ public class UserInterface extends Application {
 	public void start(Stage primaryStage) {
 		// Initiate the homes
 		initiateHouses();
-		
+
 		// Base value for out filters
 		min_rooms = Application_variables.min_rooms;
 		max_rooms = Application_variables.max_rooms;
@@ -172,8 +186,65 @@ public class UserInterface extends Application {
 		reset_and_quit.setRight(quit);
 		BorderPane.setMargin(quit, new Insets(20));
 
+		// RANGESLIDER part
+
+		// Initiate and add the title
+		room_bp = new BorderPane();
+		room_b = new Button("ROOMS");
+		room_b.setStyle("-fx-background-color: #c0c5ce; -fx-font-size:30");
+		room_b.setDisable(true);
+		//BorderPane.setMargin(room_b, new Insets(20));
+
+		// Initiate and add the title
+		price_bp = new BorderPane();
+		price_b = new Button("PRICES");
+		price_b.setStyle("-fx-background-color: #c0c5ce; -fx-font-size:30");
+		price_b.setDisable(true);
+		//BorderPane.setMargin(price_b, new Insets(20));
+
+		// room_slider = new RangeSlider();
+		// price_slider = new RangeSlider();
+		room_slider = new RangeSlider(min_rooms, max_rooms, min_rooms, max_rooms, 10);
+		room_slider.setShowTickLabels(true);
+		room_slider.setShowTickMarks(true);
+		room_slider.setBlockIncrement(1);
+		room_slider.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				min_rooms = (int) room_slider.getInfValue();
+				max_rooms = (int) room_slider.getSupValue();
+				drawHomes(gc);
+			}
+		});
+
+		price_slider = new RangeSlider(min_price, max_price, min_price, max_price, 10);
+		price_slider.setShowTickLabels(true);
+		price_slider.setShowTickMarks(true);
+		// price_slider.setBlockIncrement(1);
+		price_slider.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				min_price = (int) price_slider.getInfValue();
+				max_price = (int) price_slider.getSupValue();
+				drawHomes(gc);
+			}
+		});
+		
+		room_bp.setLeft(room_b);
+		BorderPane.setMargin(room_b, new Insets(20));
+		room_bp.setCenter(room_slider);
+		BorderPane.setMargin(room_slider, new Insets(20));
+		
+		price_bp.setLeft(price_b);
+		BorderPane.setMargin(price_b, new Insets(20));
+		price_bp.setCenter(price_slider);
+		BorderPane.setMargin(price_slider, new Insets(20));
+
+		// Add the several component to the right container
 		right_vbox.getChildren().add(title_pane);
 		right_vbox.getChildren().add(reset_and_quit);
+		right_vbox.getChildren().add(room_bp);
+		right_vbox.getChildren().add(price_bp);
 
 		// Add the 2 components to the base
 		root.getItems().add(left_pane);
@@ -187,8 +258,8 @@ public class UserInterface extends Application {
 
 	// TODO -> now, the behavior isn't what we want it to be
 	private void reset() {
-		//min_rooms +=1;
-		
+		// min_rooms +=1;
+
 		min_rooms = Application_variables.min_rooms;
 		max_rooms = Application_variables.max_rooms;
 		min_price = Application_variables.min_price;

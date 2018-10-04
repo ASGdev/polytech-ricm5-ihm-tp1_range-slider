@@ -1,4 +1,4 @@
-package dynamic_queries;
+package parameters;
 
 public class Application_variables {
 
@@ -17,8 +17,8 @@ public class Application_variables {
 	static public int max_y = 1000 - graph_size_home;
 
 	// Price
-	static public int max_price = 1000000;
-	static public int min_price = 1;
+	static public int max_price = 100000;
+	static public int min_price = 1000;
 
 	// Rooms
 	static public int max_rooms = 6;

@@ -1,5 +1,7 @@
 package dynamic_queries;
 
+import parameters.Application_variables;
+
 public class Home {
 
 	// =============================================
