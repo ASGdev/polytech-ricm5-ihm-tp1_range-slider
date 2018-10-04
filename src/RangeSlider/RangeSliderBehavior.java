@@ -132,11 +132,23 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 			rangeslider.requestFocus();
 		if (rangeslider.getOrientation().equals(Orientation.HORIZONTAL)) {
 			if (target_thumb == SelectedThumb.INF) {
-				rangeslider.adjustInfValue(
-						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+				double newvalue = position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin();
+							
+				if(newvalue > rangeslider.getSupValue()) {
+					rangeslider.adjustSupValue(newvalue);	
+				} else {
+					rangeslider.adjustInfValue(newvalue);
+				}
+			
 			} else {
-				rangeslider.adjustSupValue(
-						position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin());
+				double newvalue = position * (rangeslider.getMax() - rangeslider.getMin()) + rangeslider.getMin();
+				
+				if(newvalue < rangeslider.getSupValue()) {
+					rangeslider.adjustInfValue(newvalue);	
+				} else {
+					rangeslider.adjustSupValue(newvalue);
+				}
+				
 			}
 		} else {
 			if (target_thumb == SelectedThumb.INF) {

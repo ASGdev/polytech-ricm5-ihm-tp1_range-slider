@@ -240,19 +240,12 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 			getSkinnable().requestLayout();
 		} else if ("INF_VALUE".equals(p)) {
 			// only animate thumb if the track was clicked - not if the thumb is dragged
-			if (currently_selected_thumb == SelectedThumb.INF) {
-				positionInfThumb(trackClicked);
-			} else {
-				positionSupThumb(trackClicked);
-			}
+			positionInfThumb(trackClicked);
+			positionSupThumb(trackClicked);
 		} else if ("SUP_VALUE".equals(p)) {
 			// only animate thumb if the track was clicked - not if the thumb is dragged
-			// only animate thumb if the track was clicked - not if the thumb is dragged
-			if (currently_selected_thumb == SelectedThumb.INF) {
-				positionInfThumb(trackClicked);
-			} else {
-				positionSupThumb(trackClicked);
-			}
+			positionInfThumb(trackClicked);
+			positionSupThumb(trackClicked);
 		} else if ("MIN".equals(p)) {
 			if (showTickMarks && tickLine != null) {
 				tickLine.setLowerBound(slider.getMin());

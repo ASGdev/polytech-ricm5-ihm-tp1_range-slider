@@ -51,7 +51,7 @@ public class Main extends Application {
         rangeslider.setMajorTickUnit(5);
         rangeslider.setMinorTickCount(5);
         rangeslider.setBlockIncrement(1);
-        rangeslider.setSnapToTicks(true);
+        rangeslider.setSnapToTicks(false);
 
         VBox root = new VBox();
         root.getChildren().add(btn);
