@@ -204,10 +204,15 @@ public class UserInterface extends Application {
 
 		// room_slider = new RangeSlider();
 		// price_slider = new RangeSlider();
-		room_slider = new RangeSlider(min_rooms, max_rooms, min_rooms, max_rooms, 10);
+		room_slider = new RangeSlider(min_rooms, max_rooms, min_rooms, max_rooms);
 		room_slider.setShowTickLabels(true);
 		room_slider.setShowTickMarks(true);
+		room_slider.setMajorTickUnit(1);
+		room_slider.setMinorTickCount(0);
 		room_slider.setBlockIncrement(1);
+		room_slider.setSnapToTicks(true);
+		room_slider.setRangeTrackColor("#5294e2");
+		room_slider.setTrackColor("#c0c5ce");
 		room_slider.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -217,10 +222,13 @@ public class UserInterface extends Application {
 			}
 		});
 
-		price_slider = new RangeSlider(min_price, max_price, min_price, max_price, 10);
+		price_slider = new RangeSlider(min_price, max_price, min_price, max_price);
 		price_slider.setShowTickLabels(true);
 		price_slider.setShowTickMarks(true);
 		// price_slider.setBlockIncrement(1);
+		price_slider.setMajorTickUnit(10000);
+		price_slider.setRangeTrackColor("#5294e2");
+		price_slider.setTrackColor("#c0c5ce");
 		price_slider.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {

@@ -88,7 +88,7 @@ public class RangeSlider extends Control {
     }
 
     public final String getTrackColor() {
-        return trackColor == null ? "" : trackColor.get();
+        return trackColor.get();
     }
 
     /**
@@ -100,7 +100,7 @@ public class RangeSlider extends Control {
     }
 
     public final String getRangeTrackColor() {
-        return rangeTrackColor == null ? "" : rangeTrackColor.get();
+        return rangeTrackColor.get();
     }
 
 	/**

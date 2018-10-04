@@ -81,9 +81,12 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		track = new StackPane();
 		track.getStyleClass().setAll("track");
 		
+		System.out.println(rangeTrackColor);
+		System.out.println(trackColor);
+		
 		// overrides track color
-		if(trackColor != "") {
-			track.setStyle("-fx-background-color: " +  rangeTrackColor + ";");
+		if(trackColor != null) {
+			track.setStyle("-fx-background-color: " +  trackColor + ";");
 		}
 		
 		// horizontal = getSkinnable().isVertical();
@@ -92,8 +95,8 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		rangeTrack.getStyleClass().setAll("track");
 		
 		// sets default color for range (inner) track
-		if(rangeTrackColor != "") {
-			rangeTrack.setStyle("-fx-background-color: " +  trackColor + ";");
+		if(rangeTrackColor != null) {
+			rangeTrack.setStyle("-fx-background-color: " +  rangeTrackColor + ";");
 		}
 		
 		
