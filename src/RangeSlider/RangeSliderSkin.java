@@ -48,9 +48,15 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 
 	private boolean trackClicked = false;
 	// private double visibleAmount = 16;
+	
+	private String trackColor = "";
+	private String rangeTrackColor = "";
 
 	public RangeSliderSkin(RangeSlider rangeslider) {
 		super(rangeslider, new RangeSliderBehavior(rangeslider));
+		
+		trackColor = rangeslider.getTrackColor();
+		rangeTrackColor = rangeslider.getRangeTrackColor();
 
 		initialize();
 		rangeslider.requestLayout();
@@ -65,6 +71,8 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		registerChangeListener(rangeslider.minorTickCountProperty(), "MINOR_TICK_COUNT");
 		registerChangeListener(rangeslider.labelFormatterProperty(), "TICK_LABEL_FORMATTER");
 		registerChangeListener(rangeslider.snapToTicksProperty(), "SNAP_TO_TICKS");
+		
+		
 	}
 
 	private void initialize() {
@@ -72,12 +80,23 @@ public class RangeSliderSkin extends BehaviorSkinBase<RangeSlider, RangeSliderBe
 		inf_thumb.getStyleClass().setAll("thumb");
 		track = new StackPane();
 		track.getStyleClass().setAll("track");
+		
+		// overrides track color
+		if(trackColor != "") {
+			track.setStyle("-fx-background-color: " +  rangeTrackColor + ";");
+		}
+		
 		// horizontal = getSkinnable().isVertical();
 
 		rangeTrack = new StackPane();
 		rangeTrack.getStyleClass().setAll("track");
+		
 		// sets default color for range (inner) track
-		rangeTrack.setStyle("-fx-background-color: slateblue;");
+		if(rangeTrackColor != "") {
+			rangeTrack.setStyle("-fx-background-color: " +  trackColor + ";");
+		}
+		
+		
 		rangeTrack.setMouseTransparent(true);
 
 		sup_thumb = new StackPane();

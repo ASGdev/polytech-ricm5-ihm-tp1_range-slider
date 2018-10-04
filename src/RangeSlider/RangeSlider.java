@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
@@ -12,6 +13,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WritableBooleanValue;
 import javafx.beans.value.WritableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.AccessibleAction;
@@ -35,8 +41,18 @@ import javafx.css.Styleable;
 import javafx.css.StyleableProperty;
 
 public class RangeSlider extends Control {
+	
+	public String tcolor = "";
+	public String rtcolor = "";
 
-    public RangeSlider(int min, int max, int inf, int sup, int value){
+	/**
+     * Constructs a RangeSlider control with the specified slider min, max and current value values.
+     * @param min Slider minimum value
+     * @param max Slider maximum value
+     * @param inf Slider current inferior value
+     * @param inf Slider current superior value
+     */
+    public RangeSlider(int min, int max, int inf, int sup){
         setMax(max);
         setMin(min);
         setInfValue(inf);
@@ -54,19 +70,40 @@ public class RangeSlider extends Control {
         initialize();
     }
 
-    /**
-     * Constructs a RangeSlider control with the specified slider min, max and current value values.
-     * @param min Slider minimum value
-     * @param max Slider maximum value
-     * @param value Slider current value
-     */
+    
 
     private void initialize() {
         //Initialize the style class to be 'slider'.
         getStyleClass().setAll(DEFAULT_STYLE_CLASS);
         setAccessibleRole(AccessibleRole.SLIDER);
     }
+    
+
     /**
+     * The track color used in this Slider.
+     */
+    private StringProperty trackColor = new SimpleStringProperty("");
+    public final void setTrackColor(String value) {
+        trackColor.set(value);
+    }
+
+    public final String getTrackColor() {
+        return trackColor == null ? "" : trackColor.get();
+    }
+
+    /**
+     * The track color used in this Slider.
+     */
+    private StringProperty rangeTrackColor = new SimpleStringProperty("");
+    public final void setRangeTrackColor(String value) {
+        rangeTrackColor.set(value);
+    }
+
+    public final String getRangeTrackColor() {
+        return rangeTrackColor == null ? "" : rangeTrackColor.get();
+    }
+
+	/**
      * The maximum value represented by this Slider. This must be a
      * value greater than {@link #minProperty() min}.
      */

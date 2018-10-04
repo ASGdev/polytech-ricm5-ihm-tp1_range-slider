@@ -44,7 +44,7 @@ public class Main extends Application {
         simpleslider.setBlockIncrement(1);
         simpleslider.setSnapToTicks(true);
 
-        RangeSlider rangeslider = new RangeSlider(0, 10, 5, 7, 0);
+        RangeSlider rangeslider = new RangeSlider(0, 10, 5, 7);
         rangeslider.setShowTickLabels(true);
         rangeslider.setShowTickLabels(true);
         rangeslider.setShowTickMarks(true);
@@ -52,6 +52,8 @@ public class Main extends Application {
         rangeslider.setMinorTickCount(5);
         rangeslider.setBlockIncrement(1);
         rangeslider.setSnapToTicks(false);
+        rangeslider.setTrackColor("blue");
+        rangeslider.setRangeTrackColor("red");
 
         VBox root = new VBox();
         root.getChildren().add(btn);
