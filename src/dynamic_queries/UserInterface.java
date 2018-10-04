@@ -185,8 +185,14 @@ public class UserInterface extends Application {
 		primaryStage.show();
 	}
 
+	// TODO -> now, the behavior isn't what we want it to be
 	private void reset() {
-		min_rooms +=2;
+		//min_rooms +=1;
+		
+		min_rooms = Application_variables.min_rooms;
+		max_rooms = Application_variables.max_rooms;
+		min_price = Application_variables.min_price;
+		max_price = Application_variables.max_price;
 		drawHomes(gc);
 	}
 
@@ -206,7 +212,7 @@ public class UserInterface extends Application {
 			try {
 				tab_homes[i] = new Home(x, y, rooms, price);
 			} catch (HomeException e) {
-				// FIXME error handling
+				i--;
 				e.printStackTrace();
 			}
 		}
