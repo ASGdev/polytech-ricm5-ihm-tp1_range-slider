@@ -100,7 +100,8 @@ public class UserInterface extends Application {
 
 		// Where we add the buttons
 		right_pane = new BorderPane();
-		right_pane.setStyle("-fx-background-color: #383c4a;");
+		//right_pane.setStyle("-fx-background-color: #383c4a;");
+		right_pane.setStyle("-fx-background-color: #2a2d38;");
 
 		// Where we keep the canvas
 		left_pane = new StackPane();
@@ -202,8 +203,7 @@ public class UserInterface extends Application {
 		price_b.setDisable(true);
 		//BorderPane.setMargin(price_b, new Insets(20));
 
-		// room_slider = new RangeSlider();
-		// price_slider = new RangeSlider();
+
 		room_slider = new RangeSlider(min_rooms, max_rooms, min_rooms, max_rooms);
 		room_slider.setShowTickLabels(true);
 		room_slider.setShowTickMarks(true);
@@ -272,6 +272,13 @@ public class UserInterface extends Application {
 		max_rooms = Application_variables.max_rooms;
 		min_price = Application_variables.min_price;
 		max_price = Application_variables.max_price;
+		
+		room_slider.setInfValue(Application_variables.min_rooms);
+		room_slider.setSupValue(Application_variables.max_rooms);
+		price_slider.setInfValue(Application_variables.min_price);
+		price_slider.setSupValue(Application_variables.max_price);
+		
+		
 		drawHomes(gc);
 	}
 
