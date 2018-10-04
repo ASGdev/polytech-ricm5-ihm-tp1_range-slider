@@ -38,17 +38,10 @@ public class RangeSliderBehavior extends BehaviorBase<RangeSlider> {
 	static {
 		SLIDER_BINDINGS.add(new KeyBinding(F4, "TraverseDebug").alt().ctrl().shift());
 
-		// controls the inferior boundary
 		SLIDER_BINDINGS.add(new SliderKeyBinding(LEFT, "DecrementInfValue"));
-		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_LEFT, "DecrementInfValue"));
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_LEFT, "DecrementSupValue"));
 		SLIDER_BINDINGS.add(new SliderKeyBinding(RIGHT, "IncrementInfValue"));
-		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_RIGHT, "IncrementInfValue"));
-
-		// controls the upper boundary
-		SLIDER_BINDINGS.add(new SliderKeyBinding(UP, "IncrementSupValue").vertical());
-		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_UP, "IncrementSupValue").vertical());
-		SLIDER_BINDINGS.add(new SliderKeyBinding(DOWN, "DecrementSupValue").vertical());
-		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_DOWN, "DecrementSupValue").vertical());
+		SLIDER_BINDINGS.add(new SliderKeyBinding(KP_RIGHT, "IncrementSupValue"));
 
 		SLIDER_BINDINGS.add(new KeyBinding(HOME, KEY_RELEASED, "Home"));
 		SLIDER_BINDINGS.add(new KeyBinding(END, KEY_RELEASED, "End"));

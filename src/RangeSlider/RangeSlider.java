@@ -59,8 +59,6 @@ public class RangeSlider extends Control {
         setSupValue(sup);
         adjustValues();
         initialize();
-        
-        System.out.println("Initialized RS : " + getMin() + " " + getMax() + " " + getInfValue() + " " + getSupValue());
     }
 
     /**
@@ -683,8 +681,7 @@ public class RangeSlider extends Control {
      * value will always be set to align with a tick mark.
      */
     private void adjustValues() {
-    	System.out.println("RS : " + getMin() + " " + getMax() + " " + getInfValue() + " " + getSupValue());
-        
+    	        
     	if ((getInfValue() < getMin() || getInfValue() > getMax()) /* &&  !isReadOnly(value)*/) {
         	setInfValue(Utils.clamp(getMin(), getInfValue(), getMax()));
         }
